@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Merry Christmas</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+
+	<body>
+		<div id="info">
+			可以用单指/双指操作改变视角哦！
+		</div>
+
+		<script type="module">
+
+			import * as THREE from './build/three.module.js';
+
+			// import Stats from './jsm/libs/stats.module.js';
+            // import { GUI } from './jsm/libs/dat.gui.module.js';
+
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { RGBELoader } from './jsm/loaders/RGBELoader.js';
+			import { RoughnessMipmapper } from './jsm/utils/RoughnessMipmapper.js';
+            import { EXRLoader } from './jsm/loaders/EXRLoader.js';
+            import { CinematicCamera } from './jsm/cameras/CinematicCamera.js';
+            import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+			import { RenderPass } from './jsm/postprocessing/RenderPass.js';
+			import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
+            
+			var container, stats, controls;
+			var camera, scene, renderer,composer,light1, light2, light3, light4,mixer;
+            var clock = new THREE.Clock();
+
+			init();
+			animate();
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+                camera = new CinematicCamera( 60, window.innerWidth / window.innerHeight, 0.01, 20 );
+				camera.setLens( 5 );
+				// camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 20 );
+				camera.position.set( -1.5, 1, 0 );
+
+				scene = new THREE.Scene();
+
+				new RGBELoader()
+					.setDataType( THREE.UnsignedByteType )
+					.setPath( './' )
+					.load( 'shanghai_bund_2k.hdr', function ( texture ) {
+
+						var envMap = pmremGenerator.fromEquirectangular( texture ).texture;
+						pmremGenerator.dispose();
+
+						scene.background = envMap;
+						scene.environment = envMap;
+
+						// model
+
+						var roughnessMipmapper = new RoughnessMipmapper( renderer );
+
+                        
+						var loader = new GLTFLoader().setPath( './' );
+						loader.load( 'snow4embed.gltf', function ( gltf ) {
+
+							gltf.scene.traverse( function ( child ) {
+
+								if ( child.isMesh ) {
+
+									roughnessMipmapper.generateMipmaps( child.material );
+
+								}
+
+							} );
+                            gltf.scene.scale.set(0.3,0.3,0.3);
+                            gltf.scene.rotateY(Math.PI);
+							scene.add( gltf.scene );
+
+                            mixer = new THREE.AnimationMixer( gltf.scene );
+                            gltf.animations.forEach(function(clip){
+                                mixer.clipAction( clip.optimize() ).play();
+                            })
+                            
+							roughnessMipmapper.dispose();
+
+						} );
+
+					} );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+                // renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer.toneMapping = THREE.ReinhardToneMapping;
+                renderer.toneMappingExposure = Math.pow( 0.8, 4.0 );
+				renderer.outputEncoding = THREE.sRGBEncoding;
+                container.appendChild( renderer.domElement );
+
+				var pmremGenerator = new THREE.PMREMGenerator( renderer );
+				pmremGenerator.compileEquirectangularShader();
+
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.target.set( 0, 1, 0 );
+                controls.update();
+
+                //lights
+                var intensity = 10;
+                var sphere = new THREE.SphereBufferGeometry( 0.05, 16, 8 );
+				light1 = new THREE.PointLight( 0xff0040, intensity, 50 );
+				// light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xff0040 } ) ) );
+				scene.add( light1 );
+				light2 = new THREE.PointLight( 0x0040ff, intensity, 50 );
+				// light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x0040ff } ) ) );
+				scene.add( light2 );
+				light3 = new THREE.PointLight( 0x80ff80, intensity, 50 );
+				// light3.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x80ff80 } ) ) );
+				scene.add( light3 );
+				light4 = new THREE.PointLight( 0xffaa00, intensity, 50 );
+				// light4.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffaa00 } ) ) );
+				scene.add( light4 );
+
+                // var params = {
+                //     exposure: 0.5,
+                //     bloomStrength: 1.5,
+                //     bloomThreshold: 0.5,
+                //     bloomRadius: 0
+                // };
+
+                // var size = 10;
+                // var divisions = 10;
+
+                // var axesHelper = new THREE.AxesHelper( 5 );
+                // scene.add( axesHelper );
+
+                scene.add( new THREE.AmbientLight( 0x404040, 30 ) );
+                // var pointLight = new THREE.PointLight( 0xffffff, 10 );
+                // // pointLight.position.set(-2,1.5,0)
+                // camera.add( pointLight );
+
+                // var sphereSize = 1;
+                // var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize, 0xff0000 );
+                // scene.add( pointLightHelper );
+
+                // var renderScene = new RenderPass( scene, camera );
+
+                // var bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+                // bloomPass.threshold = params.bloomThreshold;
+                // bloomPass.strength = params.bloomStrength;
+                // bloomPass.radius = params.bloomRadius;
+
+                // composer = new EffectComposer( renderer );
+                // composer.addPass( renderScene );
+                // composer.addPass( bloomPass );
+
+                // var gui = new GUI();
+
+                // gui.add( params, 'exposure', 0.1, 2 ).onChange( function ( value ) {
+                //     renderer.toneMappingExposure = Math.pow( value, 4.0 );
+                // } );
+
+                // gui.add( params, 'bloomThreshold', 0.0, 1.0 ).onChange( function ( value ) {
+                //     bloomPass.threshold = Number( value );
+                // } );
+
+                // gui.add( params, 'bloomStrength', 0.0, 10.0 ).onChange( function ( value ) {
+                //     bloomPass.strength = Number( value );
+                // } );
+
+                // gui.add( params, 'bloomRadius', 0.0, 1.0 ).step( 0.01 ).onChange( function ( value ) {
+                //     bloomPass.radius = Number( value );
+                // } );
+
+                var effectController = {
+
+                    focalLength: 15,
+                    // jsDepthCalculation: true,
+                    // shaderFocus: false,
+                    //
+                    fstop: 5.0,
+                    // maxblur: 1.0,
+                    //
+                    showFocus: false,
+                    focalDepth: 2.5,
+                    // manualdof: false,
+                    // vignetting: false,
+                    // depthblur: false,
+                    //
+                    // threshold: 0.5,
+                    // gain: 2.0,
+                    // bias: 0.5,
+                    // fringe: 0.7,
+                    //
+                    // focalLength: 35,
+                    // noise: true,
+                    // pentagon: false,
+                    //
+                    // dithering: 0.0001
+
+                };
+
+                var matChanger = function ( ) {
+
+                    for ( var e in effectController ) {
+
+                        if ( e in camera.postprocessing.bokeh_uniforms ) {
+
+                            camera.postprocessing.bokeh_uniforms[ e ].value = effectController[ e ];
+
+                        }
+
+                    }
+
+                    camera.postprocessing.bokeh_uniforms[ 'znear' ].value = camera.near;
+                    camera.postprocessing.bokeh_uniforms[ 'zfar' ].value = camera.far;
+                    camera.setLens( effectController.focalLength, camera.frameHeight, effectController.fstop, camera.coc );
+                    effectController[ 'focalDepth' ] = camera.postprocessing.bokeh_uniforms[ 'focalDepth' ].value;
+
+                };
+
+                //
+
+                // var gui = new GUI();
+
+                // gui.add( effectController, 'focalLength', 1, 135, 0.01 ).onChange( matChanger );
+                // gui.add( effectController, 'fstop', 1.8, 22, 0.01 ).onChange( matChanger );
+                // gui.add( effectController, 'focalDepth', 0.1, 100, 0.001 ).onChange( matChanger );
+                // gui.add( effectController, 'showFocus', true ).onChange( matChanger );
+
+                matChanger();
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// stats
+				// stats = new Stats();
+				// container.appendChild( stats.dom );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+                var time = Date.now() * 0.001;
+				var delta = clock.getDelta();
+
+                light1.position.x = Math.sin( time * 0.7 ) * 3;
+				light1.position.y = Math.cos( time * 0.5 ) * 4;
+				light1.position.z = Math.cos( time * 0.3 ) * 3;
+				light2.position.x = Math.cos( time * 0.3 ) * 3;
+				light2.position.y = Math.sin( time * 0.5 ) * 4;
+				light2.position.z = Math.sin( time * 0.7 ) * 3;
+				light3.position.x = Math.sin( time * 0.7 ) * 3;
+				light3.position.y = Math.cos( time * 0.3 ) * 4;
+				light3.position.z = Math.sin( time * 0.5 ) * 3;
+				light4.position.x = Math.sin( time * 0.3 ) * 3;
+				light4.position.y = Math.cos( time * 0.7 ) * 4;
+                light4.position.z = Math.sin( time * 0.5 ) * 3;
+
+				requestAnimationFrame( animate );
+
+                if(mixer){
+                    mixer.update( delta );
+                }
+                
+				// renderer.render( scene, camera );
+                render();
+                // composer.render();
+				// stats.update();
+
+            }
+            
+            function render(){
+                if ( camera.postprocessing.enabled ) {
+                    camera.renderCinematic( scene, renderer );
+                } 
+                else {
+                    scene.overrideMaterial = null;
+
+                    renderer.clear();
+                    renderer.render( scene, camera );
+                }
+            }
+
+		</script>
+
+	</body>
+</html>
