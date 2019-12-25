@@ -28,7 +28,7 @@ import {
 	LoaderUtils,
 	Mesh,
 	MeshPhongMaterial
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var AMFLoader = function ( manager ) {
 

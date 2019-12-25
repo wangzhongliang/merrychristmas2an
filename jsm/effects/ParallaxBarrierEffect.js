@@ -15,7 +15,7 @@ import {
 	ShaderMaterial,
 	StereoCamera,
 	WebGLRenderTarget
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var ParallaxBarrierEffect = function ( renderer ) {
 

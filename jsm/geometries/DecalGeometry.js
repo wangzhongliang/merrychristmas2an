@@ -21,7 +21,7 @@ import {
 	Float32BufferAttribute,
 	Matrix4,
 	Vector3
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var DecalGeometry = function ( mesh, position, orientation, size ) {
 

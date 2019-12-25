@@ -8,7 +8,7 @@ import {
 	Math as _Math,
 	Spherical,
 	Vector3
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var FirstPersonControls = function ( object, domElement ) {
 

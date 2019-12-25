@@ -8,7 +8,7 @@
 import {
 	StereoCamera,
 	Vector2
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var StereoEffect = function ( renderer ) {
 

@@ -23,7 +23,7 @@ import {
 	Mesh,
 	MeshPhongMaterial,
 	TextureLoader
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var TDSLoader = function ( manager ) {
 

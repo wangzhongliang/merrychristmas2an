@@ -15,7 +15,7 @@ import {
 	MeshPhongMaterial,
 	Object3D,
 	Texture
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var AWDLoader = ( function () {
 

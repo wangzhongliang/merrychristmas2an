@@ -10,7 +10,7 @@
 
 import {
 	Vector2
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var FXAAShader = {
 

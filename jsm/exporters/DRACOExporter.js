@@ -17,7 +17,7 @@
 
 import {
 	BufferGeometry
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 /* global DracoEncoderModule */
 

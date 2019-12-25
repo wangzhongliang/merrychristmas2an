@@ -16,7 +16,7 @@ import {
 	Geometry,
 	Matrix3,
 	Vector3
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var STLExporter = function () {};
 

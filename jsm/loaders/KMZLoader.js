@@ -7,7 +7,7 @@ import {
 	Group,
 	Loader,
 	LoadingManager
-} from "../../../three.module.js";
+} from "../../three.module.js";
 import { ColladaLoader } from "../loaders/ColladaLoader.js";
 
 var KMZLoader = function ( manager ) {

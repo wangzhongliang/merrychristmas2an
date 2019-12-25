@@ -20,7 +20,7 @@ import {
 	SkinnedMesh,
 	TextureLoader,
 	Vector3
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var AssimpLoader = function ( manager ) {
 

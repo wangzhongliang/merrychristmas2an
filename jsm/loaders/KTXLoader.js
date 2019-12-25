@@ -9,7 +9,7 @@
 
 import {
 	CompressedTextureLoader
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 
 var KTXLoader = function ( manager ) {

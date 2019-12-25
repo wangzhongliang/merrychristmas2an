@@ -4,7 +4,7 @@
 
 import {
 	Loader
-} from "../../../three.module.js";
+} from "../../three.module.js";
 import { GLTFLoader } from "../loaders/GLTFLoader.js";
 
 // VRM Specification: https://dwango.github.io/vrm/vrm_spec/

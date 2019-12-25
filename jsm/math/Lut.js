@@ -4,7 +4,7 @@
 
 import {
 	Color
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var Lut = function ( colormap, numberofcolors ) {
 

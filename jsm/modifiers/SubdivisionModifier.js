@@ -19,7 +19,7 @@ import {
 	Geometry,
 	Vector2,
 	Vector3
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var SubdivisionModifier = function ( subdivisions ) {
 

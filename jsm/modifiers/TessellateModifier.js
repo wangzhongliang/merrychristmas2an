@@ -7,7 +7,7 @@
 
 import {
 	Face3
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var TessellateModifier = function ( maxEdgeLength ) {
 

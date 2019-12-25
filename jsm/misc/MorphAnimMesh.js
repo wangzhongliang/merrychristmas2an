@@ -6,7 +6,7 @@ import {
 	AnimationClip,
 	AnimationMixer,
 	Mesh
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var MorphAnimMesh = function ( geometry, material ) {
 

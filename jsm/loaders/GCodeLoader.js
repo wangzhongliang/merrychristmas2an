@@ -18,7 +18,7 @@ import {
 	LineBasicMaterial,
 	LineSegments,
 	Loader
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var GCodeLoader = function ( manager ) {
 

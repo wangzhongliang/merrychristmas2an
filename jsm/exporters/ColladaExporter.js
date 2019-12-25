@@ -20,7 +20,7 @@ import {
 	Mesh,
 	MeshBasicMaterial,
 	MeshLambertMaterial
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var ColladaExporter = function () {};
 

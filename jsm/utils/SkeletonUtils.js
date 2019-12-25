@@ -13,7 +13,7 @@ import {
 	Vector2,
 	Vector3,
 	VectorKeyframeTrack
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var SkeletonUtils = {
 

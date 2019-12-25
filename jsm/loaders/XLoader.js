@@ -22,7 +22,7 @@ import {
 	Uint16BufferAttribute,
 	Vector2,
 	Vector3
-} from "../../../three.module.js";
+} from "../../three.module.js";
 
 var XLoader = ( function () {
 

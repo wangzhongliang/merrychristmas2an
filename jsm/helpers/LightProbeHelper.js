@@ -6,7 +6,7 @@ import {
 	Mesh,
 	ShaderMaterial,
 	SphereBufferGeometry
-} from '../../../three.module.js';
+} from '../../three.module.js';
 
 function LightProbeHelper( lightProbe, size ) {
 
