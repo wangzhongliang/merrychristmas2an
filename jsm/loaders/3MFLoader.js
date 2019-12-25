@@ -40,7 +40,7 @@ import {
 	TextureLoader,
 	VertexColors,
 	sRGBEncoding
-} from "../../../build/three.module.js";
+} from "../../../three.module.js";
 
 var ThreeMFLoader = function ( manager ) {
 

@@ -17,7 +17,7 @@ import {
 	LinearFilter,
 	RGBAFormat,
 	RGBFormat
-} from "../../../build/three.module.js";
+} from "../../../three.module.js";
 import { Zlib } from "../libs/inflate.module.min.js";
 
 // /*

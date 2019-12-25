@@ -14,7 +14,7 @@ import {
 	Points,
 	PointsMaterial,
 	VertexColors
-} from "../../../build/three.module.js";
+} from "../../../three.module.js";
 
 var PCDLoader = function ( manager ) {
 

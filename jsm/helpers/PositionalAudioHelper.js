@@ -8,7 +8,7 @@ import {
 	LineBasicMaterial,
 	Line,
 	Math as _Math
-} from '../../../build/three.module.js';
+} from '../../../three.module.js';
 
 function PositionalAudioHelper( audio, range, divisionsInnerAngle, divisionsOuterAngle ) {
 
